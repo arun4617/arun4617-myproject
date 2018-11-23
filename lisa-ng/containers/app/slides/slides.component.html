@@ -1,0 +1,8 @@
+<!-- Displaying the search result -->
+<ul>
+  <li class='slide_list_new' *ngFor="let slide of slideList">
+    <div class="slide_hover" style="width:100%;text-align: center;">
+      <img class="image" [src]="getSlideThumbnail(slide)"  (click)="copyFile(slide)">
+    </div>
+  </li> 
+</ul>

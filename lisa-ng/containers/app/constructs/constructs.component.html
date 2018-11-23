@@ -1,0 +1,13 @@
+<!-- Default template page section is displayed here -->
+<ul>
+    <li *ngFor="let construct of constructs" [class.selected]="selectedConstruct == construct.id">
+      <!-- Displaying the template category -->
+      <div class="construct" (click)="onSelect(construct)" >
+        <img [src]="getImagePath(construct)"> <span class="constructName">{{ construct.name }}</span>
+      </div>
+      <!-- Displaying the sub-category on clicking the category the sub-category display -->
+      <div *ngIf="selectedConstruct==construct.id">
+        <app-slides [slideList]="slidesResults"></app-slides>
+      </div> 
+    </li>
+</ul>

@@ -1,0 +1,26 @@
+[
+	{
+	  "date": "08/08/2018",
+	  "title": "Metrics section",
+		"description": "Added new tab 'Metrics', Displays the Weekly usage stats and  Aggregate stats",
+		"bucket" : "Metrics"		
+	},
+	{
+	  "date": "09/08/2018",
+	  "title": "Added Service Down Banner support",
+		"description": "When the tech team brings the service for maintenance, the users will now see a service down banner, instead of an un-responsive application",
+		"bucket" : "Service"
+	},
+	{
+	  "date": "12/09/2018",
+	  "title": "Node Supported integrated in frontend",
+		"description": "Now, we can update node values of a slide, search by node values and  insert a specific node into currently open slide deck.",
+		"bucket" : "Frontend"
+	},
+	{
+	  "date": "12/09/2018",
+	  "title": "Various UI improvements",
+		"description": "1. User can update the node values in the slide details, <br/> 2. User can search keyword by node",
+		"bucket" : "Frontend"
+	}
+]

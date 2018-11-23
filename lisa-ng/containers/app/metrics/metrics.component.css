@@ -1,0 +1,142 @@
+.inactive{
+    color: blue;
+    font-size: 15px;
+}
+.active{
+    color: red;
+    font-size: 15px;
+}
+.drop-inner .dropdown-menu li{
+    border:none !important;
+    background-color: #fff !important;
+}
+.drop-inner{
+    position: relative;
+}
+
+.drop-inner .dropdown-menu{
+    right: 0;
+    left: inherit !important;
+    position: absolute !important;
+    transform: inherit !important;
+    top: 35px !important;
+}
+
+@media screen and (max-width:768px){
+    .drop-inner .dropdown-menu{
+        right: 0 !important;
+        transform: inherit !important;
+        top: 35px !important;
+    }   
+}
+
+table td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+    text-align: center;
+}
+table td:nth-child(1){
+    text-align: left;
+}
+
+.userdetailtable{
+    border: 2px solid black;
+    display: inline-block;
+    width: 100%;
+    overflow: auto;
+}
+
+.weeklyTitle{
+    width: 100%;
+    font-weight: bold;
+    margin-top: 40px;
+}
+
+.aligntext {text-align: center;}
+
+tr.odd {
+    background-color: #ccc!important;
+}
+@media (min-width:1024px){
+    .top_header {
+        position: fixed;
+        background: #fff;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+    }
+    .top_header > * {
+        max-width: 1110px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .body_header {
+        position: relative;
+        margin-top: 8%;
+    }
+}
+@media only screen and (min-width:768px) and (max-width:1024px){
+    .top_header {
+        position: fixed;
+        background: #fff;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+    }
+    .top_header > * {
+        max-width: 690px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .body_header {
+        position: relative;
+        margin-top: 10%;
+    }
+    .top_menu{
+        padding-left: 40px;
+    }
+}
+@media screen and (min-width:451px) and (max-width: 767px) {
+    .top_header {
+        position: fixed;
+        background: #fff;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+    }
+    .top_header > * {
+        max-width: 510px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .body_header {
+        position: relative;
+        margin-top: 14%;
+    }
+    .top_menu{
+        padding-left: 40px;
+    }
+}
+@media screen and (min-width:277px) and (max-width: 450px) {
+    .top_header {
+        position: fixed;
+        background: #fff;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+    }
+    .top_header > * {
+        max-width: 383px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .body_header {
+        position: relative;
+        margin-top: 20%;
+    }
+    .top_menu{
+        padding-left: 30px;
+    }
+}

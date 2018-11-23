@@ -1,0 +1,59 @@
+<div>
+  <label class="forfeedform" for="feedback">Feedback</label>
+</div>
+<!-- Displaying Feedback form after clicking the Feedback button -->
+<div>
+  <input type="checkbox" id="feedback" >
+  <div class="feedbackpopup">
+        <div class="areaselect" (click)="areaDropDown()">
+            <input class="areainput" type="text" value="Select area" readonly [(ngModel)]="areaSelect">
+          </div>
+          <div *ngIf="lisaarea">
+            <ul class="areaListview"  *ngFor="let cons of areaResult;">
+              <li class="arealist" (click)="areaItemClick(cons.name)">
+                <input class="areaInputValue"  type="radio"  readonly value="Text input 1" >
+                <label>{{cons.name}}</label>
+              </li>
+            </ul>
+          </div>
+          <!-- Radio option to choose Bug or Feature -->
+          <div class="radioSuggest">
+            <label class="suggestOptionLeft">
+                <input class="form-check-input" type="radio" name="mode" [value]="true" [(ngModel)]="suggestOption">Bug
+            </label>
+            <label class="suggestOptionRight">
+                <input class="form-check-input" type="radio" name="mode" [value]="false" [(ngModel)]="suggestOption">Feature
+            </label>
+          </div>
+
+          <div class="radioSuggest">
+            <div class="sendEmail" (click)="sendEmailRequest(areaSelect, suggestOption, 'mail')">
+                <button class="buttonStyle" >Send Email</button> 
+            </div>
+            <div class="gotoVsts">
+                <button class="buttonStyle" (click)="gotoVsts(areaSelect, suggestOption)">Go to VSTS</button>
+            </div>
+          </div>
+
+          <div class="requestClass">
+              <a href="javascript:void(0)" (click)="sendEmailRequest(areaSelect, suggestOption,'request')" >Request</a> a VSTS Account
+          </div>
+          <div class="popUpStyle" *ngIf="feedbackAlert"> 
+            <div class="popUpTextStyle"><h5 [innerHTML]="feedbackMessage"></h5></div>
+          </div>
+  </div>
+</div>
+  <!-- Show popup after clicking the send email button -->
+  <div *ngIf="showpopup">
+    <div class="modal-custom" >
+      <div class="modalHeader">
+        Click <a href="javascript:void(0)" (click)="clickhere()">here</a> to send following email
+      </div>
+      <div class="modalContent">
+        To : {{emailto}}<br/>
+        Subject : {{emailsubject}}<br/>
+        Body : {{emailbody}}
+      </div>
+      <button (click)="cancelemail()" class="modalCancel">OK</button>
+    </div>
+  </div>

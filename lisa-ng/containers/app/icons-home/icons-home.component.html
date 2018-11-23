@@ -1,0 +1,47 @@
+<!-- Display the header section and Authenticate at header section -->
+<div class="top_header">
+  <div class="row mt-3">
+    <div class="col-10 col-md-10 top_menu">
+      <a class="home" href="javascript:void(0)" routerLink="/search">Home</a>
+      <a class="home" href="javascript:void(0)" routerLink="/upload">Upload</a>
+      <a class="icon" href="#">Icons</a>
+      <a class="home" href="javascript:void(0)" routerLink="/metrics">Metrics</a>
+    </div>
+    <div class="col-2 col-md-2 drop-inner text-right">
+      <div class="dropdown">
+          <a data-toggle="dropdown">
+            <i class="fa fa-2x fa-user-circle"></i>
+          </a>
+          <ul class="dropdown-menu pl-3">
+            <li>
+                <div>
+                    <h6 class="text-success" >{{ useremail }}</h6>
+                </div>
+            </li>
+            <hr style="margin-top: 0;margin-bottom: 0;border: 0;border-top: 1px solid rgba(0,0,0,.1);">
+            <li><button class="btn btn-sm btn-info" (click)="authenticate()">Authenticate</button></li>
+            <li><a href="javascript:void(0)" (click)="logout()"><i class="fa fa-power-off"></i> Sign out</a></li>
+          </ul>
+        </div>
+    </div>
+  </div>
+  <!-- Displaying Feedback button -->
+  <app-feedbackform></app-feedbackform>
+</div>
+<div class="body_header">
+  <div class="iconsHomeDiv">
+    <h3 class="iconsHeader">Recently Used</h3>
+    <!-- Display the icon under recently used section -->
+    <app-icons></app-icons>
+
+    <div class="spacer"></div>
+    <h3 class="iconsHeader">Full-color Icons</h3>
+    <!-- Display the icon under full-color icons -->
+    <app-icons></app-icons>
+
+    <div class="spacer"></div>
+    <h3 class="iconsHeader">Cisco blue Icons</h3>
+    <!-- Display the icon under cisco blue icons -->
+    <app-icons></app-icons>
+  </div>
+</div>

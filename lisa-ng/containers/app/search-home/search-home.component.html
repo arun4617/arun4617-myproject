@@ -1,0 +1,625 @@
+<!-- Display the header section and Authenticate at header section -->
+<div class="top_header">
+    <div class="row mt-3">
+        <div class="col-10 col-md-10 top_menu">
+            <a class="home" href="javascript:void(0)" (click)="homepage()">Home</a>
+            <a class="icon" href="javascript:void(0)" routerLink="/upload">Upload</a>
+            <a class="icon" href="javascript:void(0)" routerLink="/icons">Icons</a>
+            <a class="icon" href="javascript:void(0)" routerLink="/metrics">Metrics</a>
+        </div>
+        <div class="col-2 col-md-2 drop-inner text-right">
+            <div class="dropdown">
+                <a data-toggle="dropdown">
+                    <i class="fa fa-2x fa-user-circle"></i>
+                </a>
+                <ul class="dropdown-menu pl-3">
+                    <li>
+                        <div>
+                            <h6 class="text-success" >{{ useremail }}</h6>
+                        </div>
+                    </li>
+                    <li>
+                        <hr style="margin-top: 10px;margin-bottom: 10px;border: 0;border-top: 1px solid rgba(0,0,0,.1);">
+                    </li>
+                    <li><button class="btn btn-sm btn-info" (click)="authenticate()">Authenticate</button></li>
+                    <li>
+                        <a href="javascript:void(0)" (click)="logout()"><i class="fa fa-power-off"></i> Sign out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Displaying Feedback button -->
+    <app-feedbackform></app-feedbackform>
+        
+    <!-- Form will be submitted once key enter in search input box -->
+    <div class="searchBox">
+        <div class="keywordmain">
+            <div class="keywordinput">
+                <input [(ngModel)]="searchText" (keyup.enter)="advancedSearchClick(searchText, false)" size="40" tabindex="0" placeholder="Keyword search">
+            </div> 
+            <div class="search_popup" >
+                <p>Search help</p>
+                <p>1) Use *keyword to use keyword for rating, but not filtering</p>
+                <p>2) Use +keyword to filter in keyword from search results</p>
+                <p>3) Use -keyword to filter out keyword from search results</p>
+                <p>4) #slideId to search for specific slide IDs</p>
+                <p>5) goo%y to search tags which start with "goo" and end with "y"</p>
+            </div> 
+        </div>
+        <div class="keywordmain" style="margin-top: 4px;">
+            <div class="keywordnodes" (click)="nodeClick()">
+                <input style="width:100%;" type="text" [(ngModel)]="nodesValue" readonly>
+                <div class="keywordnodespopup nodetreewrapper">
+                    <ul class="nodeTreeview" *ngFor="let min of myOptions; index as nodeIndex">
+                        <li class="conceptlist" style="padding:0;">
+                            <div *ngIf="min.status==true">
+                                <input class="nodeInputValue" checked type="checkbox" name="tall-i" id="{{nodeIndex}}" (change)="nodeItemClick(min.id,min.name,$event, nodeIndex)">
+                                <label for="{{nodeIndex}}">{{min.name}}</label>
+                            </div>
+                            <div *ngIf="min.status==false">
+                                <input class="nodeInputValue" type="checkbox" name="tall-i" id="{{nodeIndex}}" (change)="nodeItemClick(min.id,min.name,$event, nodeIndex)">
+                                <label for="{{nodeIndex}}">{{min.name}}</label>
+                            </div>                    
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="keywordradio nodeRadioButton">
+                <input style="margin-top: 9px;" type="radio" [(ngModel)]="nodeAllAny" name="nodeAllAny" value="true"> All &nbsp;
+                <input style="margin-top: 9px;" type="radio" [(ngModel)]="nodeAllAny" name="nodeAllAny" value="false"> Any &nbsp;
+            </div>
+        </div>
+        
+        <!-- Option for reset and Advanced search -->
+        <div class="reset_advanced">
+            <a href="javascript:void(0)" class="whatsnew" (click)="whatsnewPopup()">What's new</a>
+            <a href="javascript:void(0)" class="advanced" (click)="advanceClick()">Advanced Search </a>
+            <a href="javascript:void(0)" class="reset" (click)="resetClick()">Reset</a>
+        </div>
+    </div>
+    <input type='hidden' name='csrfmiddlewaretoken' value='wcGGSzqvghkoHlOrKnwo3VcE9RHV03mEABToAq6oLJpbdIfVPvQU4I7yfaTBQoeX' />
+</div>
+<div class="body_header">
+    <!-- Advanced search template is displayed -->
+    <div class="advanced_search" *ngIf="advancedSearch">
+        <div class="constructmain" (click)="conceptClick()">
+            <input class="conceptmain" type="text" [(ngModel)]="conceptDropdownDisplayText" readonly>
+        </div>
+        <div *ngIf="conceptVisible" class="treewrapper">
+            <ul class="conceptTreeview" *ngFor="let cons of conceptResult;">
+                <li class="conceptlist" *ngIf="cons.enabled == true">
+                    <input type="checkbox" name="tall-i" id="{{i}}">
+                    <label>
+                        <p type="text" readonly>{{cons.name}}</p>
+                    </label>
+                    <ul>
+                        <li class="constructlist" *ngFor="let con of cons.constructs;">
+                            <div *ngIf="getItem(con.id) == true">
+                                <input class="conceptInputValue" checked type="checkbox" readonly value="Text input 1" (change)="conceptItemClick(con.id,con.name,$event)">
+                                <label>{{con.name}}({{con.id}})</label>
+                            </div>
+                            <div *ngIf="getItem(con.id) == false">
+                                <input class="conceptInputValue" type="checkbox" readonly value="Text input 1" (change)="conceptItemClick(con.id,con.name,$event)">
+                                <label>{{con.name}}({{con.id}})</label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="constructmain">
+            <select [(ngModel)]="visualstyle">
+                <option value="" selected="selected"> All Visual Styles</option>
+                <option value="Basic">Basic</option>
+                <option value="Edgy">Edgy</option>
+                <option value="Slick">Slick</option>
+                <option value="Fancy">Fancy</option>
+            </select>
+        </div>
+        <div class="constructmain">
+            <select [(ngModel)]="content">
+                <option value="" selected="selected"> All Slide Content</option>
+                <option value="Limited">Limited</option>
+                <option value="Medium">Medium</option>
+                <option value="Extensive">Extensive</option>
+            </select>
+        </div>
+        <div class="constructmain constructwrapper">
+            <div class="button_bottom" >
+                <div class="left">
+                    <input type="button" name="apply" value="Apply" (click)="advancedSearchClick(searchText, false)">
+                </div>
+                <div class="right">
+                    <input type="button" name="cancel" value="Cancel" (click)="cancelClick()">
+                </div>
+            </div>
+        </div>
+        <div class="layoutmain">
+            <div class="layoutlabel">Icon :</div>
+            <div class="layoutselect">
+                <input type="radio" [(ngModel)]="icon" name="icon" value="true"> Yes &nbsp;
+                <input type="radio" [(ngModel)]="icon" name="icon" value="false"> No &nbsp;
+                <input type="radio" [(ngModel)]="icon" name="icon" value=""> Any&nbsp;
+            </div>
+        </div>
+        <div class="layoutmain">
+            <div class="layoutlabel">Image :</div>
+            <div class="layoutselect">
+                <input type="radio" [(ngModel)]="image" name="image" value="true"> Yes &nbsp;
+                <input type="radio" [(ngModel)]="image" name="image" value="false"> No &nbsp;
+                <input type="radio" [(ngModel)]="image" name="image" value=""> Any&nbsp;
+            </div>
+        </div>
+        <div class="layoutmain">
+            <input type="checkbox" style="margin: 12px 0 0 10px;" [(ngModel)]="enabled" name="enabled"> Search disabled slides
+        </div>    
+        
+        <div class="button_bottom button_wrapper" >
+            <div class="left">
+                <input type="button" name="apply" value="Apply" (click)="advancedSearchClick(searchText, false)">
+            </div>
+            <div class="right">
+                <input type="button" name="cancel" value="Cancel" (click)="cancelClick()">
+            </div>
+        </div>
+    </div>
+    <!-- Header template section is displayed -->
+    <div *ngIf="tempSuggest">
+        <div>
+            <h3 class="constructsHeader">Template Suggestions </h3>
+        </div>
+        <hr style="margin-top: 0; margin-bottom: 0;"/>
+    </div>
+    <!-- Displaying the total count return from the web service -->
+    <div *ngIf="resultCount">
+        <div class="resultHeader">
+            <div style="font-size:15px;">Total {{searchResults.count}} results in {{serverTime}} ms(<span style="color:blue;" (mousedown)="breakUpClick(serverTimeStatus)">breakup</span>)</div>
+        </div>
+        <div class="slideresultheader">
+            <div class="slideSearchDiv" *ngIf="searchResults.results && searchResults.results.length > 0">
+                <img style="width: 35px;height: 35px;background-color: #ccc;border-radius: 6px;padding: 2px;" src="../../assets/icons/browser.png" (click)="browserClick()">
+            </div>
+        </div>
+        <div class="slideresultheader">
+            <div class="slideSearchDiv" style="float: right;text-align: right;" *ngIf="searchResults.results && searchResults.results.length > 0">
+                <select style="height: 35px;font-size: 21px;margin-bottom: 10px;float: right;display: inline-block;" [(ngModel)]="rowCount" (change)="selectedRow()">
+                    <option value="10" >10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+        <br/><br/>
+        <hr/>
+        <div class="breakUpToggle" style="display: none;">
+            <div id="list"></div>
+        </div>   
+    </div>
+
+    <!-- Displaying the template section on startup -->
+    <div class="constructsDiv" *ngIf="!searchResults.results || searchResults.results.length == 0">
+        <!-- Constructs page loads here to display the category -->
+        <div *ngIf="constructsHome">
+            <!-- Default template page section is displayed here -->
+            <ul class="treeview checklist" *ngFor="let cons of conceptResult;index as i">
+                <li *ngIf="cons.enabled == true">
+                    <input type="checkbox" name="tall-i" id="{{i}}">
+                    <label>
+                        <input type="text" readonly  value="Input value" [(ngModel)]="cons.name">
+                    </label>
+                    <ul>
+                        <li *ngFor="let con of cons.constructs;index as j">
+                            <label>
+                                <input type="text" readonly value="Text input 1" [(ngModel)]="con.name" (click)="constructClick(searchText, con.id)">
+                            </label>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Check for result -->
+    <div style="width:100%;">
+        <div class="slideSearchDiv" *ngIf="searchResults.results && searchResults.results.length > 0">
+            <!-- Displaying the search result  -->
+            <div>
+                <ul class="browserwrapper" >
+                    <li class='slide_list_new' *ngFor="let slide of searchResults.results;let i = index">
+                        <div class="slide_hover" id="slidehover">
+                            <img style="max-width: 100%;" class="image" [src]="slide.imageFile" (click)="copyFile(slide)">
+                        </div>
+                        <div class="slide_popup" style="width:100%;">
+                            <div class="slide_popup_title">
+                                <div class="slider_filter_img">
+                                    <a href="#">
+                                        <label (click)="filterClick()">
+                                            <img src="../../assets/images/filter_icon.png" />
+                                        </label>
+                                    </a>
+                                </div>
+                                <div class="slider_filter_list" style="font-size: 15px;">
+                                    {{slide.friendlyId}}
+                                </div>
+                                <div style="font-size: 11px;width: 8%;float: right;text-align: right;">
+                                    {{i+1}}
+                                </div>
+                            </div>
+                            <div class="slider_filter_buttons">
+                                <div class="slider_filter_options">
+                                    <ul>
+                                        <li class="arrow_u" (click)="changeRating(i,slide.myRating, slide.id, true)">
+                                            <img src="../../assets/icons/uparrow.png" width="40px" height="40px">
+                                        </li>
+                                        <li class="rating_num">
+                                            <div>
+                                                <h4>{{slide.myRating}}</h4>
+                                            </div>
+                                            <div class="ratingPopUp" role="dialog" >
+                                                <div >
+                                                    <!-- Modal content-->
+                                                    <div class="ratingdialog">
+                                                        <div>
+                                                            <div *ngFor="let smile of smileySet; let j=index">
+                                                                <img style="float: left;" class="smiley" src="{{smile.path}}" (click)="smileyClick(j, i, slide.id)">
+                                                            </div><br>
+                                                            <div *ngFor="let smile of smileySet; let j=index">
+                                                                <span style="float: left;text-align: center;" class="smiley">{{smile.value}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="arrow_d" (click)="changeRating(i,slide.myRating, slide.id, false)">
+                                            <img src="../../assets/icons/downarrow.png" width="40px" height="40px">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="slider_filter_option_buttons">
+                                    <input type="button" name="insert_deck" value="Insert into Deck" class="insert" (click)="insertFileIntoDeck(slide, i)" style="width: 99%;" /><br/>
+                                    <a class="download" style="margin-right: 2%;" href="javascript:void(0)" target="_blank" (click)="download(slide.id, slide.pptxFile, slide.downloads, i, slide.myRating)">Download</a>
+                                    <a class="detail" style="margin-left: 2%;" (click)="viewEdit(slide.slide, slide.id, slide.friendlyId, i)">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div> <br/>
+    </div>
+    <!-- Loadmore results -->
+    <button *ngIf="nextPageUrl" class="loadmore" (click)="loadMore(nextPageUrl)">Load More</button>
+    <p style="display: inline-block;">Query Json - {{queryJson}}</p>
+</div>  
+<!-- Message Modal -->
+<div id="showMsgModal" class="modal fade show" role="dialog" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body" style="font-size: 20px;">
+                <p [innerHTML]="popUpmessage"></p>
+            </div>
+            <div *ngIf="yesRatingPopup">
+                <div style="margin: 0 15px 0px 15px;font-size: 18px;">
+                    <div *ngIf="downloadPopup">You can contribute to improve the search algorithm by rating search results. You have downloaded {{downloadCount}} slides and rated {{rateCount}} results.</div>
+                    <div *ngIf="insertPopup">You can contribute to improve the search algorithm by rating search results. You have inserted {{insertCount}} slides and rated {{rateCount}} results.</div>
+                </div>
+                <div style="margin: 0 15px 0px 15px;font-size: 18px;">
+                    <P>Please click below to rate the current slide</P>
+                </div>
+                <div style="display: none;">{{slideIndex}}</div>
+                <div style="display: none;">{{rateSlideId}}</div>
+                <div class="smileywrap">
+                    <div *ngFor="let smile of smileySet; let i=index">
+                        <img *ngIf="smile.active == 0" class="smiley_popup" src="{{smile.path}}" (click)="smileyClick(i, slideIndex, rateSlideId)">
+                        <img *ngIf="smile.active == 1" class="smiley_popup active" src="{{smile.path}}" (click)="smileyClick(i, slideIndex, rateSlideId)">
+                        <p style="text-align: center;">{{smile.value}}</p>
+                    </div><br>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" (click)="rateLater()">I will rate later</button>
+                </div>
+            </div>
+            <div *ngIf="noRatingPopup">
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <div *ngIf="noErrorRatingPopup">
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Message Modal -->
+<div id="showMsgModalDialog" class="modal fade show" role="dialog" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content searchDialog">
+            <div class="modal-body">
+                <img src="../../assets/images/loading_spinner.gif" style="width: 60px;height: 60px;float: left;">
+                <p [innerHTML]="popUpmessage" style="margin-top: 15px;"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Message Modal -->
+<div id="showSingleViewEditModal" class="modal fade show" role="dialog" style="z-index: 99999;">
+    <div class="modal-dialog showSingleViewEditModal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div style="color: blue; font-size: 20px; text-align: center;">
+                    <p>{{friendlyId}}</p>
+                </div>
+                <div class="diagram_wrapper">
+                    <div class="uploadinner1">
+                        <img src="{{slideImage}}" style="width: 100%;border: 1px solid black;max-height:60vh;" />
+                    </div>
+                    <div style="width: 100%;display: inline-block;padding: 5px;">
+                        <input type="radio" name="gender" (click)="uploadSelectedSlides()"> Upload selected slide and update metadata<br>
+                        <input type="radio" name="gender" (click)="uploadFiles()"/> Upload files and update metadata <br>
+                        <div style="width:100%;" *ngIf="uploadFile">
+                            <label class="custom-file-upload" style="float: left;">
+                                <input type="file" accept=".pptx" (change)="onChangePptx($event)"/>
+                                Browse Pptx
+                            </label>
+                            <label class="custom-file-upload" style="float: right;">
+                                <input type="file" accept=".jpg" (change)="onChangeImage($event)"/>
+                                Browse Image
+                            </label><br>
+                        </div>
+                        <input type="radio" name="gender" (click)="noChange()" checked> Only update metadata<br><br>
+                    </div>
+                </div>
+                <div class="diagram_cntnt_wrapper">
+                    <div class="uploadinner1">
+                        <div class="uploadinnerLeft">
+                            Concept 
+                        </div>
+                        <div class="uploadinnerMiddle">
+                            : 
+                        </div>
+                        <div class="uploadinnerRight">
+                            {{concept}}
+                        </div>
+                    </div>
+                    <div class="uploadinner1">
+                        <div class="uploadinnerLeft">
+                            Construct
+                        </div>
+                        <div class="uploadinnerMiddle">
+                            : 
+                        </div>
+                        <div class="uploadinnerRight">
+                            <div class="constructwrap" (click)="constructClickModal()">
+                                <input style="width: 100%;" class="conceptmain" type="text" [(ngModel)]="construct" readonly>
+                            </div>
+                            <div *ngIf="constructVisibleModal" style="float: left;width: 98%;margin-left: 1%;">
+                                <ul class="conceptwrapperview checklist" *ngFor="let cons of conceptResult;index as j">
+                                    <li *ngIf="cons.enabled == true">
+                                        <input type="checkbox" name="tall-j" id="{{j}}">
+                                        <label>
+                                            <input type="text" readonly  value="Input value" [(ngModel)]="cons.name">
+                                        </label>
+                                        <ul>
+                                            <li *ngFor="let con of cons.constructs;">
+                                                <label>
+                                                    <input type="text" readonly value="Text input 1" [(ngModel)]="con.name" (click)="constructItemClickModal(cons.name, con.name,con.id)">
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uploadinner1">
+                        <div class="uploadinnerLeft">
+                            Identifiers
+                        </div>
+                        <div class="uploadinnerMiddle">
+                            : 
+                        </div>
+                        <div class="uploadinnerRight" >
+                            <div *ngFor="let tag of tags; let in=index">
+                                <span style="float: left;font-size: 18px;color: black;">{{tag}}
+                                    <img class="tagsImage" src="../../assets/images/exit.png" (click)="tagsRemoveClick(tag,in)"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uploadinner1">
+                        <div class="uploadinnerRight">
+                            <textarea name="Text1" cols="40" rows="5" (keydown.enter)="singleSlideAddTagClick(addTagValue);false" style="width:100%;height: 45px;float: left;" [(ngModel)]="addTagValue" placeholder='Input tag and press enter to add'></textarea>
+                        </div>
+                    </div>
+                    <div class="uploadinner1">
+                        <div class="uploadinnerLeft">
+                            Icons
+                        </div>
+                        <div class="uploadinnerMiddle">
+                            : 
+                        </div>
+                        <div class="uploadinnerRight">
+                            <select [(ngModel)]="hasIcon" style="width:100%;">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="uploadinner1">
+                        <div class="uploadinnerLeft">
+                            Images
+                        </div>
+                        <div class="uploadinnerMiddle">
+                            : 
+                        </div>
+                        <div class="uploadinnerRight">
+                            <select [(ngModel)]="hasImage" style="width:100%;">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="uploadinner1">
+                        <div class="uploadinnerLeft">
+                            Style
+                        </div>
+                        <div class="uploadinnerMiddle">
+                            : 
+                        </div>
+                        <div class="uploadinnerRight">
+                            <select style="width:100%;float: right;" [(ngModel)]="style" >
+                                <option value="Basic">Basic</option>
+                                <option value="Enhanced">Enhanced</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="uploadinner1">
+                        <div class="uploadinnerLeft">
+                            Layout
+                        </div>
+                        <div class="uploadinnerMiddle">
+                            : 
+                        </div>
+                        <div class="uploadinnerRight">
+                            <select style="width:100%;" [(ngModel)]="layout">
+                                <option value="Basic">Basic</option>
+                                <option value="Enhanced">Enhanced</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="uploadinner1">
+                        <div class="uploadinnerLeft">
+                            Content 
+                        </div>
+                        <div class="uploadinnerMiddle">
+                            : 
+                        </div>
+                        <div class="uploadinnerRight">
+                            <select style="width:100%;" [(ngModel)]="viewContent">
+                                <option value="Limited">Limited</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Extensive">Extensive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="uploadinner1">
+                        <div class="uploadinnerLeft">
+                            Enabled
+                        </div>
+                        <div class="uploadinnerMiddle">
+                            : 
+                        </div>
+                        <div class="uploadinnerRight">
+                            <select [(ngModel)]="viewEnabled" style="width:100%;">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="uploadinner1">
+                        <div class="uploadinnerLeft" style="margin-top:15px;">
+                            Node
+                        </div>
+                        <div class="uploadinnerMiddle" style="margin-top:15px;">
+                            : 
+                        </div>
+                        <div class="uploadinnerRight">
+                            <div class="slidecontainer" style="width:48%;float: left;">
+                                <p style="width:100%; text-align: center;margin-bottom: 0;">Start</p>
+                                <p style="width:10%; float:left;">{{nodeStart}}</p><input style="width:90%;float:right;" [(ngModel)]="nodeStart" type="range" min="1" max="20" value="0">
+                            </div>
+                            <div class="slidecontainer" style="width:48%;margin-left: 5px;float:right">
+                                <p style="width:100%; text-align: center;margin-bottom: 0;">Slide Count</p>
+                                <p style="width:10%; float:left;">{{nodeCount}}</p><input style="width:90%;float:right;" [(ngModel)]="nodeCount" type="range" min="1" max="20" value="0">
+                            </div>
+                            <!--
+                            <div class="slidecontainer" style="width: 100%;display: inline-block;line-height: 1.3;margin-bottom: 8px;">
+                                <p style="width:100%; text-align: center;margin-bottom: 0;">0 means un-initialized. User cannot set 0 from the slider.</p>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                    <div style="display: none;">{{slideId}}</div>
+                    <div style="display: none;">{{slideIndex}}</div>
+                    <div class="uploadinner1" style="text-align: right;border-top:2px solid black">
+                        <button type="button" class="btn btn-default viewEditStyle" (click)="deleteSlide(slideId)"> Delete </button>
+                        <button type="button" class="btn btn-default viewEditStyle" (click)="cancelView()"> Cancel </button>
+                        <button type="button" class="btn btn-default viewEditStyle" (click)="singleSlideSubmitClick(slideId, slideIndex)"> Submit </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="showConfirmDialog" class="modal fade show" role="dialog" style="margin-top: 50px;z-index: 99999;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content searchDialog">
+            <div class="modal-body">
+                <p style="margin-top: 15px;">Are you sure to delete</p>
+                <p style="display: none;" >{{closeSlideID}}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="noConfirmDialog()"> No </button>
+                <button type="button" class="btn btn-default" (click)="yesConfirmDialog(closeSlideID)"> Yes </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="showDisableDialog" class="modal fade show" role="dialog" style="margin-top: 50px;z-index: 99999;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content searchDialog">
+            <div class="modal-body">
+                <p style="margin-top: 15px;">Enabled slides can't be deleted</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="okDisableDialogClick()"> Okay </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="slideSearchDiv" *ngIf="getWidth" style="height: 1px;" >
+    <ul id="browserwrapper" style="width: 100%;display: inline-block;">
+        <li style="background-color: transparent;" class='slide_list_new' id='slide_list_new' *ngFor="let slide of [1,2,3,4]">
+        </li>
+    </ul>
+</div>
+<div id="showImageDialog" class="modal fade show" role="dialog" style="margin-top: 50px;z-index: 99999;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content detailDialog"> 
+            <div class="modal-body">
+                <img style="max-width: 100%;" class="image" [src]="imageURL">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="showWhatsNewDialog" class="modal fade show" role="dialog" style="margin-top: 50px;z-index: 99999;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content"> 
+            <div class="modal-header pop_header">
+                <p style="margin-top:0; margin-bottom: 0;font-size: 20px;">What's new</p>
+            </div>
+            <div class="modal-body" *ngFor="let whatsnew of whatsnewArray">
+                <div style="border-bottom: 1px solid #cacaca;display: inline-block;width: 100%;">
+                    <p class="modalTitle" [innerHTML]="whatsnew.title"></p> 
+                    <p class="modalDate">{{whatsnew.dateFormat}}</p>
+                </div>
+                <p class="modalDescription" [innerHTML]="whatsnew.description"></p><br/>                          
+            </div>
+        </div>
+    </div>
+</div>

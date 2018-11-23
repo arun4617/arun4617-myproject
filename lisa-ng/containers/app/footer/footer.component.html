@@ -1,0 +1,8 @@
+<!-- Display the select tag to choose the API url from lisa-dev, lisa-prod and localhost -->
+<div class="alignselect">
+  <select [(ngModel)]="selectedAPI" (change)="setApiUrl()">
+    <option value="lisadev">Lisa-dev</option>
+    <option value="lisaprod">Lisa-prod</option>
+    <option value="localhost">Localhost</option>
+  </select>
+</div>

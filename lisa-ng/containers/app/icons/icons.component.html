@@ -1,0 +1,4 @@
+<!-- Displays the icon-image from the icons array -->
+<span *ngFor="let icon of icons">
+    <img [src]="getIconPath(icon)" (click)="clickImage(icon)"/>
+</span>

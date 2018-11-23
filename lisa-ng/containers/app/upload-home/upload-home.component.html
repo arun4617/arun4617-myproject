@@ -1,0 +1,422 @@
+<!-- Display the header section and Authenticate at header section -->
+<div class="top_header">
+  <div class="row mt-3">
+    <div class="col-10 col-md-10 top_menu">
+      <a class="home" href="javascript:void(0)" (click)="home()">Home</a>
+      <a class="upload" href="javascript:void(0)" >Upload</a>
+      <a class="icon" href="javascript:void(0)" (click)="icons()">Icons</a>
+      <a class="icon" href="javascript:void(0)" (click)="metrics()">Metrics</a>
+    </div>
+    <div class="col-2 col-md-2 drop-inner text-right">
+      <div class="dropdown">
+          <a data-toggle="dropdown">
+            <i class="fa fa-2x fa-user-circle"></i>
+          </a>
+          <ul class="dropdown-menu pl-3">
+              <li>
+                  <div>
+                      <h6 class="text-success" >{{ useremail }}</h6>
+                  </div>
+              </li>
+              <hr style="margin-top: 0;margin-bottom: 0;border: 0;border-top: 1px solid rgba(0,0,0,.1);">
+            <li><button class="btn btn-sm btn-info" (click)="authenticate()">Authenticate</button></li>
+            <li><a href="javascript:void(0)" (click)="logout()"><i class="fa fa-power-off"></i> Sign out</a></li>
+          </ul>
+        </div>
+    </div>
+  </div>
+  <!-- Displaying Feedback button -->
+  <app-feedbackform></app-feedbackform>
+</div>
+<div class="body_header">
+  <div style="margin-top: 50px;width:99%;display: inline-block;margin-left: 1%;">
+    <button class="buttonStyle slideSelect"  (click)="viewSelected()">View Selected</button>
+    <button class="buttonStyle slideSelect"  (click)="editSelected()">Edit Selected</button>
+    <button class="buttonStyle slideSelect" (click)="submitSelected()">Submit Selected</button>
+  </div>
+
+  <!-- *ngIf="isEven" -->
+  <div  *ngFor="let res of selectedThumbnail;let i=index;let first = first; let last = last;even as isEven; odd as isOdd"> 
+    <div class="uploadbody" >
+      <img style="float:right;" (click)="closeSlide(i,res.id)" src="../../assets/images/exit.png"/>
+      <div class="uploadinner">
+        <img style="text-align: center;width: 90%;margin-left: 5%;border:1px solid black;border-radius: 20px;padding: 5px;" 
+        src="{{res.imageFile}}">
+      </div>
+      <div class="uploadinner">
+        <div class="uploadinnerLeft">
+          Concept
+        </div>
+        <div class="uploadinnerMiddle">
+            : 
+        </div>
+        <div class="uploadinnerRight">
+          {{res.concept}}
+        </div>
+      </div>
+      <div class="uploadinner">
+        <div class="uploadinnerLeft">
+          Construct
+        </div>
+        <div class="uploadinnerMiddle">
+            : 
+        </div>
+        <div class="uploadinnerRight">
+          <div class="constructmain" (click)="constructClick()">
+            <input style="width: 100%;" class="conceptmain" type="text" [(ngModel)]="res.construct" readonly>
+          </div>
+          <div *ngIf="constructVisible">
+            <ul class="treeview checklist" *ngFor="let cons of conceptResult;index as j">
+              <li *ngIf="cons.enabled == true">
+                  <input type="checkbox" name="tall-j" id="{{j}}">
+                  <label>
+                      <input type="text" readonly  value="Input value" [(ngModel)]="cons.name">
+                  </label>
+                  <ul>
+                    <li *ngFor="let con of cons.constructs;">
+                      <label>
+                        <input type="text" readonly value="Text input 1" [(ngModel)]="con.name" (click)="constructItemClick(i,cons.name, con.name,con.id)">
+                      </label>
+                    </li>
+                  </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="uploadinner">
+        <div class="uploadinnerLeft">
+            Identifiers
+        </div>
+        <div class="uploadinnerMiddle">
+            : 
+        </div>
+        <div class="uploadinnerRight">
+          <div *ngFor="let ta of res.tags;let l=index">
+            <span style="float: left;font-size: 18px;color: black;">{{ta}}<img class="tagsImage" src="../../assets/images/exit.png" (click)="tagsClick(ta,i,l)"/></span>
+          </div>
+        </div>
+      </div>
+      <div class="uploadinner">
+        <div class="uploadinnerRight">
+          <textarea name="Text1" cols="40" rows="5" (keydown.enter)="addTag(addTagValue,i);false" style="width:100%;height: 45px;float: left;" [(ngModel)]="addTagValue" placeholder='Input tag and press enter to add'></textarea>
+        </div>
+      </div>
+      
+      <div class="uploadinner">
+        <div class="uploadinnerLeft">
+          Icons
+        </div>
+        <div class="uploadinnerMiddle">
+          : 
+        </div>
+        <div class="uploadinnerRight">
+          <select [(ngModel)]="res.hasIcon" style="width:100%;">
+            <option value=true>Yes</option>
+            <option value=false>No</option>
+          </select>
+        </div>
+      </div>
+      <div class="uploadinner">
+        <div class="uploadinnerLeft">
+            Images
+        </div>
+        <div class="uploadinnerMiddle">
+            : 
+        </div>
+        <div class="uploadinnerRight">
+          <select [(ngModel)]="res.hasImage" style="width:100%;">
+            <option value=true>Yes</option>
+            <option value=false>No</option>
+          </select>
+        </div>
+      </div>
+      <div class="uploadinner">
+          <div class="uploadinnerLeft">
+              Style
+          </div>
+          <div class="uploadinnerMiddle">
+              : 
+          </div>
+          <div class="uploadinnerRight">
+            <select style="width:100%;float: right;" [(ngModel)]="res.style">
+              <option value="Basic">Basic</option>
+              <option value="Enhanced">Enhanced</option>
+            </select>
+          </div>
+      </div>
+
+      <div class="uploadinner">
+          <div class="uploadinnerLeft">
+              Layout
+          </div>
+          <div class="uploadinnerMiddle">
+              : 
+          </div>
+          <div class="uploadinnerRight">
+              <select style="width:100%;" [(ngModel)]="res.layout" >
+                  <option value="Basic">Basic</option>
+                  <option value="Enhanced">Enhanced</option>
+                </select>
+          </div>
+      </div>
+
+      <div class="uploadinner">
+          <div class="uploadinnerLeft">
+              Content 
+          </div>
+          <div class="uploadinnerMiddle">
+              : 
+          </div>
+          <div class="uploadinnerRight">
+              <select style="width:100%;" [(ngModel)]="res.content">
+                  <option value="Limited">Limited</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Extensive">Extensive</option>
+                </select>
+          </div>
+      </div>
+      <div class="uploadinner">
+        <div class="uploadinnerLeft">
+            Enabled
+        </div>
+        <div class="uploadinnerMiddle">
+            : 
+        </div>
+        <div class="uploadinnerRight">
+          <select [(ngModel)]="res.enabled" style="width:100%;">
+            <option value=true>Yes</option>
+            <option value=false>No</option>
+          </select>
+        </div>
+      </div>
+      <div style="text-align: center;" > 
+        <button class="buttonStyle submitWidth" (click)="submit(i,res.id)">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Message Modal -->
+<div id="showMsgModal" class="modal fade show" role="dialog" style="z-index: 99999;">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <p [innerHTML]="popUpmessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="showMsgModalDialog" class="modal fade show" role="dialog" style="z-index: 99999;">
+  <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content searchDialog">
+      <div class="modal-body">
+          <img src="../../assets/images/loading_spinner.gif" style="width: 60px;
+          height: 60px;
+          float: left;">
+          <p [innerHTML]="popUpmessage" style="margin-top: 15px;"></p>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+      </div>
+  </div>
+</div>
+
+<!-- Message Modal -->
+<div id="showGroupApplyModal" class="modal fade show" role="dialog" style="z-index: 99999;">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <div style="color: blue; font-size: 20px; text-align: center;">
+          <p>Edit Metadata</p>
+        </div>
+        <div class="uploadinner1">
+          <div class="uploadinnerLeft">
+            Concept 
+          </div>
+          <div class="uploadinnerMiddle">
+              : 
+          </div>
+          <div class="uploadinnerRight">
+            {{concept}}
+          </div>
+        </div>
+        <div class="uploadinner1">
+          <div class="uploadinnerLeft">
+            Construct
+          </div>
+          <div class="uploadinnerMiddle">
+              : 
+          </div>
+          <div class="uploadinnerRight">
+            <div class="constructmain" (click)="constructClickModal()">
+              <input style="width: 100%;" class="conceptmain" type="text" [(ngModel)]="groupSummary.construct[1]" readonly>
+            </div>
+            <div *ngIf="constructVisibleModal">
+              <ul class="treeview checklist" *ngFor="let cons of conceptResult;index as j">
+                <li *ngIf="cons.enabled == true">
+                    <input type="checkbox" name="tall-j" id="{{j}}">
+                    <label>
+                        <input type="text" readonly  value="Input value" [(ngModel)]="cons.name">
+                    </label>
+                    <ul>
+                      <li *ngFor="let con of cons.constructs;">
+                        <label>
+                          <input type="text" readonly value="Text input 1" [(ngModel)]="con.name" (click)="constructItemClickModal(cons.name, con.name,con.id)">
+                        </label>
+                      </li>
+                    </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="uploadinner1">
+          <div class="uploadinnerLeft">
+              Identifiers
+          </div>
+          <div class="uploadinnerMiddle">
+              : 
+          </div>
+          <div class="uploadinnerRight" >
+            <div *ngFor="let tag of groupSummary['tags'] | KeyValuePair; let in=index">
+              <div style="width:auto; float:left; margin-right:5px;">
+                <input type="checkbox"  id="{{in}}" 
+                  [checked]="checkBoxChecked(in, tag)"
+                  (click)="checkBoxToggle(in, groupSummary['tags'], tag, false)" >
+                <label for="cb1">{{tag.key}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="uploadinner1">
+          <div class="uploadinnerRight">
+            <textarea name="Text1" cols="40" rows="5" (keydown.enter)="addTagClick(addTagValue);false" style="width:100%;height: 45px;float: left;" [(ngModel)]="addTagValue" placeholder='Input tag and press enter to add'></textarea>
+          </div>
+        </div>
+         
+        <div class="uploadinner1">
+          <div class="uploadinnerLeft">
+              Icons
+          </div>
+          <div class="uploadinnerMiddle">
+              : 
+          </div>
+          <div class="uploadinnerRight">
+              <select [(ngModel)]="groupSummary.hasIcon[1]" style="width:100%;">
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                  <option value="ManyValues">Many Values</option>
+                </select>
+          </div>
+        </div>
+        <div class="uploadinner1">
+            <div class="uploadinnerLeft">
+                Images
+            </div>
+            <div class="uploadinnerMiddle">
+                : 
+            </div>
+            <div class="uploadinnerRight">
+                <select [(ngModel)]="groupSummary.hasImage[1]" style="width:100%;">
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                  <option value="ManyValues">Many Values</option>
+                </select>
+            </div>
+        </div>
+        <div class="uploadinner1">
+            <div class="uploadinnerLeft">
+                Style
+            </div>
+            <div class="uploadinnerMiddle">
+                : 
+            </div>
+            <div class="uploadinnerRight">
+              <select style="width:100%;float: right;" [(ngModel)]="groupSummary.style[1]" >
+                <option value="Basic">Basic</option>
+                <option value="Enhanced">Enhanced</option>
+                <option value="ManyValues">Many Values</option>
+              </select>
+            </div>
+        </div>
+    
+        <div class="uploadinner1">
+            <div class="uploadinnerLeft">
+                Layout
+            </div>
+            <div class="uploadinnerMiddle">
+                : 
+            </div>
+            <div class="uploadinnerRight">
+                <select style="width:100%;" [(ngModel)]="groupSummary.layout[1]">
+                    <option value="Basic">Basic</option>
+                    <option value="Enhanced">Enhanced</option>
+                    <option value="ManyValues">Many Values</option>
+                  </select>
+            </div>
+        </div>
+    
+        <div class="uploadinner1">
+            <div class="uploadinnerLeft">
+                Content 
+            </div>
+            <div class="uploadinnerMiddle">
+                : 
+            </div>
+            <div class="uploadinnerRight">
+                <select style="width:100%;" [(ngModel)]="groupSummary.content[1]">
+                    <option value="Limited">Limited</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Extensive">Extensive</option>
+                    <option value="ManyValues">Many Values</option>
+                  </select>
+            </div>
+        </div>
+        <div class="uploadinner1">
+          <div class="uploadinnerLeft">
+              Enabled
+          </div>
+          <div class="uploadinnerMiddle">
+              : 
+          </div>
+          <div class="uploadinnerRight">
+              <select [(ngModel)]="groupSummary.enabled[1]" style="width:100%;">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+                <option value="ManyValues">Many Values</option>
+              </select>
+          </div>
+      </div>
+      </div>
+      <div class="modal-footer" style="padding: 5px;">
+        <button type="button" class="btn btn-default" (click)="cancelClick()"> Cancel </button>
+        <button type="button" class="btn btn-default" (click)="groupApplyClick()"> Apply </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="showConfirmDialog" class="modal fade show" role="dialog" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content searchDialog">
+        <div class="modal-body">
+            <p style="margin-top: 15px;">Are you sure to delete</p>
+            <p style="display: none;" >{{closeSlideID}} - {{closeSlideIndex}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="noConfirmDialog()"> No </button>
+          <button type="button" class="btn btn-default" (click)="yesConfirmDialog(closeSlideID, closeSlideIndex)"> Yes </button>
+        </div>
+        </div>
+    </div>
+  </div>

@@ -1,0 +1,123 @@
+<!-- Display the header section and Authenticate at header section -->
+<div class="top_header">
+    <div class="row mt-3">
+        <div class="col-10 col-md-10 top_menu">
+            <a class="inactive" href="javascript:void(0)" routerLink="/search">Home</a>
+            <a class="inactive" href="javascript:void(0)" routerLink="/upload">Upload</a>
+            <a class="inactive" href="javascript:void(0)" routerLink="/icons">Icons</a>
+            <a class="active" href="javascript:void(0)" >Metrics</a>
+        </div>
+        <div class="col-2 col-md-2 drop-inner text-right">
+            <div class="dropdown">
+                <a data-toggle="dropdown">
+                    <i class="fa fa-2x fa-user-circle"></i>
+                </a>
+                <ul class="dropdown-menu pl-3">
+                    <li>
+                        <div>
+                            <h6 class="text-success" >{{ useremail }}</h6>
+                        </div>
+                    </li>
+                    <hr style="margin-top: 0;margin-bottom: 0;border: 0;border-top: 1px solid rgba(0,0,0,.1);">
+                    <li>
+                        <button class="btn btn-sm btn-info" (click)="authenticate()">Authenticate</button>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" (click)="logout()"><i class="fa fa-power-off"></i> Sign out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Displaying Feedback button -->
+    <app-feedbackform></app-feedbackform>
+</div>
+<div class="body_header">
+    <!-- Displaying user usage details in table format -->
+    <div class="weeklyTitle" *ngIf="weeklyStats">
+        {{lastWeek}}
+        <img src="../../assets/icons/left_arrow.png" (click)="prevWeek()" *ngIf="prevWeekEnable">&nbsp;&nbsp;
+        <img src="../../assets/icons/left_arrow_disabled.png" *ngIf="prevWeekDisable" />
+        <img src="../../assets/icons/right_arrow.png" (click)="nextWeek()" *ngIf="nextWeekEnable">
+        <img src="../../assets/icons/right_arrow_disabled.png" *ngIf="nextWeekDisable" />
+    </div>
+    <div class="userdetailtable" *ngIf="metricsTable">
+        <table id="weeklyTable" class="weeklyTable" cellspacing="0" width="100%">
+            <thead style="font-size: 14px;text-align: center;">
+                <tr>
+                    <th>Name</th>
+                    <th>Total queries</th>
+                    <th>Unique queries</th>
+                    <th>Downloads made</th>
+                    <th>Ratings made</th>                
+                </tr>
+            </thead>
+            <tbody >
+                <tr *ngFor="let weekly of weeklyDataSet;">
+                    <td>{{weekly.name}}</td>
+                    <td class="aligntext">{{weekly.totalquery}}</td>
+                    <td class="aligntext">{{weekly.distinctquery}}</td>
+                    <td class="aligntext">{{weekly.download}}</td>
+                    <td class="aligntext">{{weekly.rating}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total:</th>
+                    <th class="aligntext">{{weeklyQuerySum}}</th>
+                    <th class="aligntext">{{uniqueQuerySum}}</th>
+                    <th class="aligntext">{{weeklyDownloadSum}}</th>
+                    <th class="aligntext">{{weeklyRatingSum}}</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <br/>
+
+    <div class="weeklyTitle" *ngIf="weeklyStats">Aggregate stats</div>
+    <div class="userdetailtable" *ngIf="metricsTable">
+        <table id="aggregateTable" class="aggregateTable" cellspacing="0" width="100%">
+            <thead style="font-size: 14px;text-align: center;">
+                <tr>
+                    <th>Name</th>
+                    <th>Total queries</th>
+                    <th>Unique queries</th>
+                    <th>Downloads made</th>
+                    <th>Ratings made</th>
+                </tr>
+            </thead>
+            <tbody >
+                <tr *ngFor="let aggregate of aggregateDataSet;">
+                    <td>{{aggregate.name}}</td>
+                    <td class="aligntext">{{aggregate.totalquery}}</td>
+                    <td class="aligntext">{{aggregate.distinctquery}}</td>
+                    <td class="aligntext">{{aggregate.download}}</td>
+                    <td class="aligntext">{{aggregate.rating}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total:</th>
+                    <th class="aligntext">{{aggregateTotalQuerySum}}</th>
+                    <th class="aligntext">{{aggregateUniqueQuerySum}}</th>
+                    <th class="aligntext">{{aggregateDownloadSum}}</th>
+                    <th class="aligntext">{{aggregateRatingSum}}</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div id="showErrorModalDialog" class="modal fade show" role="dialog" style="z-index: 99999;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content searchDialog">
+            <div class="modal-body">
+                <p [innerHTML]="popUpmessage" style="margin-top: 15px;"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

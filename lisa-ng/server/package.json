@@ -1,0 +1,32 @@
+{
+  "name": "lisa-auth-vpn",
+  "version": "1.0.0",
+  "description": "Server for lisa-auth with Angular 4 with google authentication",
+  "dependencies": {
+    "bcryptjs": "^2.1.0",
+    "body-parser": "^1.13.2",
+    "cookie": "^0.2.4",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.1",
+    "csurf": "^1.8.3",
+    "express": "~4.13.1",
+    "express-session": "^1.15.6",
+    "i": "^0.3.6",
+    "jsonwebtoken": "^5.4.1",
+    "lodash": "^3.10.0",
+    "morgan": "~1.6.1",
+    "npm": "^5.8.0",
+    "passport": "^0.3.0",
+    "passport-google-oauth": "^0.2.0",
+    "q": "^1.4.1",
+    "randomstring": "^1.1.5",
+    "request": "^2.58.0",
+    "rootpath": "^0.1.2",
+    "serve-favicon": "~2.3.0"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
+ 

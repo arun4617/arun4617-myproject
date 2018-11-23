@@ -1,0 +1,24 @@
+li {
+    padding: 5px;
+}
+
+li.selected {
+    background-color: #ccc;
+}
+
+li div {
+    border: 1px solid #aaa;
+    position: relative;
+}
+
+li div.construct img {
+    padding:15px;
+    height:50px;
+    width:50px;
+}
+ 
+li div.construct span.constructName {
+    position: absolute;
+    margin-top: 25px;
+    font-size: large;
+}
