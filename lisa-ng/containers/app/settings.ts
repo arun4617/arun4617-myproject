@@ -1,7 +1,7 @@
 // Used to store the global variables
 export const setting ={
-	DEVURL: "https://lisa-dev.com/api",
-	PRODURL: "https://lisa-prod.com:8000",
+	DEVURL: "https://lisa-dev.prezentium.com:8000",
+	PRODURL: "https://lisa-prod.prezentium.com:8000",
 	LOCALHOSTURL: "https://localhost:8000",
 	APIURL: null,
 	FRESHDESKURL: "https://freshdesk.com/api/v2/",
