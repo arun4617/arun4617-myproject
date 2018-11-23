@@ -59,7 +59,7 @@ export class MetricsComponent implements OnInit {
           name = userDetails.results[i].first_name;
           if(name == ""){
             name = userDetails.results[i].email;
-            if (name.indexOf('@prezentium.com') > -1)
+            if (name.indexOf('.com') > -1)
             {
               name = name.split('@')[0];
             }

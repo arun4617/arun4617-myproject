@@ -93,7 +93,7 @@ export class FeedbackformComponent {
                 }, 2000);
             }else{
                 this.showpopup = true;
-                this.emailto = "lisa-support@prezentium.com";
+                this.emailto = "lisa-support.com";
             
                 if(suggestOption == true){
                     this.suggestion = "Bug";
@@ -108,7 +108,7 @@ export class FeedbackformComponent {
         else
         {
             this.showpopup = true;
-            this.emailto = "lisa-support@prezentium.com";
+            this.emailto = "lisa-support.com";
             this.emailsubject = "Please create a VSTS account for me";
             this.emailbody = "<Please give justification>";
         }
@@ -118,7 +118,7 @@ export class FeedbackformComponent {
     * clickhere()      clickhere() function which which concatenates the To, Subject and Body content and send the mail to the recipient
     */
     clickhere(){
-        this.mailURL="mailto:lisa-support@prezentium.com&amp;subject="+this.emailsubject+"&amp;body="+this.emailbody;
+        this.mailURL="mailto:lisa-support.com&amp;subject="+this.emailsubject+"&amp;body="+this.emailbody;
         window.location.href = this.mailURL;
     }
     /*

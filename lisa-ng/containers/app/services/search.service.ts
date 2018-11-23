@@ -105,7 +105,7 @@ export class SearchService {
    */ 
   ratingSlides(rating:any, resultId:any)
   {
-    //document.domain = "prezentium.com";
+
 	  let headers = new Headers({
   		'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json', 
